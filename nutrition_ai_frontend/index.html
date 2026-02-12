@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nutrition AI Frontend</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Nutrition AI</h1>
+        <p>Frontend web conectado al backend FastAPI.</p>
+      </header>
+
+      <section class="card">
+        <h2>Perfil</h2>
+        <form id="nutrition-form" class="grid"></form>
+        <button id="calculate-btn" type="button">Calcular</button>
+      </section>
+
+      <section class="card">
+        <h2>Resultados</h2>
+        <div id="result-cards" class="result-grid">
+          <article><strong>Calorías</strong><span id="calories">-</span></article>
+          <article><strong>Proteínas</strong><span id="protein">-</span></article>
+          <article><strong>Grasas</strong><span id="fats">-</span></article>
+          <article><strong>Carbohidratos</strong><span id="carbs">-</span></article>
+        </div>
+        <h3>Notas</h3>
+        <ul id="notes"></ul>
+        <details>
+          <summary>Respuesta cruda</summary>
+          <pre id="raw">Sin datos.</pre>
+        </details>
+      </section>
+    </main>
+
+    <script src="./src/app.js" type="module"></script>
+  </body>
+</html>
