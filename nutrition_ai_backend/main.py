@@ -25,6 +25,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app = FastAPI(title="Nutrition AI API", version="1.0.0")
+BASE_DIR = Path(__file__).resolve().parent
+
 
 @app.get("/")
 def web_app() -> FileResponse:
