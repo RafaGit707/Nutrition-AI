@@ -1,3 +1,12 @@
+"""Entrypoint FastAPI cuando Root Directory = nutrition_ai_backend (Render)."""
+
+from pathlib import Path
+import sys
+
+# Permite importar `nutrition_ai_backend.*` aunque el deploy ejecute desde esta subcarpeta.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 """Compat entrypoint.
 
 Se mantiene para compatibilidad con comandos antiguos:
@@ -19,6 +28,7 @@ from fastapi.responses import FileResponse
 from nutrition_ai_backend.schemas.user_schema import UserInput
 from nutrition_ai_backend.services.calculator_service import calculate_nutrition
 
+app = FastAPI(title="Nutrition AI API", version="1.2.1")
 app = FastAPI(title="Nutrition AI API", version="1.1.0")
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -37,6 +47,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
 app = FastAPI(title="Nutrition AI API", version="1.0.0")
 BASE_DIR = Path(__file__).resolve().parent
 

@@ -1,3 +1,4 @@
+"""Render/FastAPI entrypoint en raíz: `main:app`."""
 """Render/FastAPI entrypoint.
 
 Este archivo existe en la raíz para que plataformas como Render detecten
@@ -12,6 +13,9 @@ from fastapi.responses import FileResponse
 
 from nutrition_ai_backend.schemas.user_schema import UserInput
 from nutrition_ai_backend.services.calculator_service import calculate_nutrition
+
+app = FastAPI(title="Nutrition AI API", version="1.2.1")
+BACKEND_DIR = Path(__file__).resolve().parent / "nutrition_ai_backend"
 
 # Instancia principal de FastAPI que Render/Uvicorn buscarán como `main:app`.
 app = FastAPI(title="Nutrition AI API", version="1.2.0")
