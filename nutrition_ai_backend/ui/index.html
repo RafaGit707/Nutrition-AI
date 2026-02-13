@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nutrition AI Web</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 30px auto; padding: 0 16px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    label { font-size: 14px; display:block; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; }
+    button { margin-top: 16px; padding: 10px 16px; cursor: pointer; }
+    pre { background: #111; color: #eaeaea; padding: 12px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>🥗 Nutrition AI</h1>
+  <p>Calculadora nutricional escalable (API + UI web básica).</p>
+
+  <div class="grid" id="form"></div>
+  <button onclick="calculate()">Calcular</button>
+
+  <h3>Resultado</h3>
+  <pre id="output">Sin calcular todavía.</pre>
+
+  <script>
+    const fields = [
+      ["age", 21], ["weight", 82], ["height", 180], ["gender", "male"],
+      ["body_fat", 18], ["activity_level", "moderate"], ["training_days", 4], ["training_type", "hypertrophy"],
+      ["training_experience_years", 2], ["sports_history", true], ["goal", "bulk"], ["sleep_hours", 7.5],
+      ["stress_level", 3], ["body_type", "mesomorph"], ["avg_daily_steps", 8000], ["work_type", "sedentary"],
+      ["metabolic_rate_factor", 1.0]
+    ];
+
+    const selects = {
+      gender:["male","female"],
+      activity_level:["sedentary","light","moderate","high","very_high"],
+      training_type:["none","strength","hypertrophy","crossfit","endurance","mixed"],
+      goal:["bulk","maintenance","cut"],
+      body_type:["ectomorph","mesomorph","endomorph","unknown"],
+      work_type:["sedentary","active","physical"],
+      sports_history:[true,false]
+    }
+
+    const form = document.getElementById('form');
+    for (const [name, value] of fields) {
+      const wrapper = document.createElement('label');
+      wrapper.textContent = name;
+      let el;
+      if (selects[name]) {
+        el = document.createElement('select');
+        for (const opt of selects[name]) {
+          const o = document.createElement('option');
+          o.value = String(opt);
+          o.textContent = String(opt);
+          if (opt === value) o.selected = true;
+          el.appendChild(o);
+        }
+      } else {
+        el = document.createElement('input');
+        el.value = value;
+      }
+      el.id = name;
+      wrapper.appendChild(el);
+      form.appendChild(wrapper);
+    }
+
+    function cast(name, value) {
+      if (["sports_history"].includes(name)) return value === 'true';
+      if (["age","training_days","stress_level","avg_daily_steps"].includes(name)) return Number.parseInt(value,10);
+      if (["weight","height","body_fat","training_experience_years","sleep_hours","metabolic_rate_factor"].includes(name)) return Number.parseFloat(value);
+      return value;
+    }
+
+    async function calculate() {
+      const payload = {};
+      for (const [name] of fields) payload[name] = cast(name, document.getElementById(name).value);
+
+      const res = await fetch('/calculate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>

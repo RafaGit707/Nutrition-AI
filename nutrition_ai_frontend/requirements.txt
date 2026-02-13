@@ -1,0 +1,2 @@
+# Frontend estático (HTML/CSS/JS): no requiere dependencias Python.
+# Este archivo existe para despliegues por subcarpeta que esperan un requirements.txt.
